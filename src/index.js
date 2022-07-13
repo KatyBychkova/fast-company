@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-//import Users from "./components/users";
+import Users from "./components/users";
 import ListOfUsers from "./components/users";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
