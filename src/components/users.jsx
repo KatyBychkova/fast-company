@@ -9,6 +9,8 @@ const Users = () => {
 
   // const renderPharse = (number) => {};
   //return <h1>Users</h1>;
+
+  const CreateUsers = () => {};
   return (
     <>
       <table className="table">
@@ -19,7 +21,7 @@ const Users = () => {
             <th scope="col">Профессия</th>
             <th scope="col">Встретился, раз</th>
             <th scope="col">Оценка</th>
-            <th scope="col">" "</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -29,19 +31,21 @@ const Users = () => {
               <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>
-                  {user.qualities.map((qualitie) => (
+                  {user.qualities.map((quality) => (
                     <span
-                      className={"badge m-1 bg-" + qualitie.color}
-                      key={qualitie._id}
+                      key={quality._id}
+                      className={"m-2 badge bg-" + quality.color}
                     >
-                      {qualitie.name}
+                      {quality.name}
                     </span>
-                  ))}
+                  ))}{" "}
                 </td>
                 <td key={user.profession._id}>{user.profession.name}</td>
                 <td>{user.completedMeetings}</td>
                 <td>{user.rate}</td>
-                {/* <td><button className='btn btn-danger' onClick={() => deleteuser(user)}>delete</button></td> */}
+                <td>
+                  <button className="btn btn-danger">delete</button>
+                </td>
               </tr>
             );
           })}
