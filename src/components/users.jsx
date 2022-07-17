@@ -2,49 +2,30 @@ import React, { useState } from "react";
 import api from "../api";
 
 const Users = () => {
-  const [userList, setUserList] = useState(api.users.fetchAll());
-  const [counter, setCounter] = useState(userList.length);
-
-  console.log(userList);
-  console.log(counter);
+  const [users, setUsers] = useState(api.users.fetchAll());
 
   const handleDelete = (userId) => {
-    setUserList((prevState) => prevState.filter((user) => user._id !== userId));
-    handleDecrement();
+    setUsers(users.filter((user) => user._id !== userId));
   };
 
-  const handleDecrement = () => {
-    setCounter((prevState) => prevState - 1);
-  };
-
-  const renderPharse = (number) => {
-    let message = "";
-    message =
-      number > 4 || number === 1
-        ? counter + " человек тусанут с тобой сегодня"
-        : number === 0
-        ? "никто не тусанет с тобой сегодня"
-        : counter + " человека тусанут с тобой сегодня";
-
-    return message;
-  };
-
-  const getMessageClasses = () => {
-    let classes = "badge fs-5 m-2 bg-";
-    classes += counter === 0 ? "danger" : "primary";
-    return classes;
+  const renderPhrase = (number) => {
+    const lastOne = Number(number.toString().slice(-1));
+    if (number > 4 && number < 15) return " человек тусанут";
+    if ([2, 3, 4].indexOf(lastOne) >= 0) return "человека тусанут";
+    if (lastOne === 1) return "человек тусанет";
+    return "человек тусанет";
   };
 
   const tableTheadCreate = () => {
     return (
-      counter !== 0 && (
+      users.length > 0 && (
         <tr>
           <th scope="col">Имя</th>
           <th scope="col">Качества</th>
           <th scope="col">Профессия</th>
           <th scope="col">Встретился, раз</th>
           <th scope="col">Оценка</th>
-          <th scope="col"></th>
+          <th />
         </tr>
       )
     );
@@ -52,16 +33,16 @@ const Users = () => {
 
   const tableBobyCreate = () => {
     return (
-      counter !== 0 &&
-      userList.map((user) => {
+      users.length > 0 &&
+      users.map((user) => {
         return (
           <tr key={user._id}>
             <td>{user.name}</td>
             <td>
               {user.qualities.map((quality) => (
                 <span
+                  className={"badge m-2 bg-" + quality.color}
                   key={quality._id}
-                  className={"m-2 badge bg-" + quality.color}
                 >
                   {quality.name}
                 </span>
@@ -72,9 +53,9 @@ const Users = () => {
             <td>{user.rate}</td>
             <td>
               <button
-                key={user._id}
-                className="btn btn-danger"
                 onClick={() => handleDelete(user._id)}
+                className="btn btn-danger"
+                key={user._id}
               >
                 delete
               </button>
@@ -87,7 +68,17 @@ const Users = () => {
 
   return (
     <>
-      <span className={getMessageClasses()}>{renderPharse(counter)}</span>
+      <h2>
+        <span
+          className={"badge " + (users.length > 0 ? "bg-primary" : "bg-danger")}
+        >
+          {users.length > 0
+            ? `${
+                users.length + " " + renderPhrase(users.length)
+              } с тобой сегодня`
+            : "Никто с тобой не тусанет"}
+        </span>
+      </h2>
       <table className="table">
         <thead>{tableTheadCreate()}</thead>
         <tbody>{tableBobyCreate()}</tbody>
