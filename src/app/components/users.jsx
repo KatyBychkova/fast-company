@@ -3,6 +3,7 @@ import User from "./user";
 
 const Users = ({ users, ...rest }) => {
   const { onDelete } = rest;
+  const { onBookmark } = rest;
   return (
     <table className="table">
       <thead>
@@ -18,7 +19,14 @@ const Users = ({ users, ...rest }) => {
       </thead>
       <tbody>
         {users.map((user) => {
-          return <User key={user._id} onDeleteUser={onDelete} {...user} />; //
+          return (
+            <User
+              key={user._id}
+              onDeleteUser={onDelete}
+              onBookmarkUser={onBookmark}
+              {...user}
+            />
+          );
         })}
       </tbody>
     </table>
