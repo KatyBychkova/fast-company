@@ -10,21 +10,26 @@ function App() {
   };
 
   const handleToggleBookmark = (id) => {
-    const index = users.findIndex((user) => user._id === id);
-    const newArray = [...users];
-    newArray[index].bookmark = newArray[index].bookmark ? false : true;
-    setUsers(newArray);
+    setUsers(
+      users.map((user) => {
+        if (user._id === id) {
+          return { ...user, bookmark: !user.bookmark };
+        }
+        return user;
+      })
+    );
+    console.log(id);
   };
 
   return (
-    <>
+    <div>
       <SearchStatus length={users.length} />
       <Users
         users={users}
         onDelete={handleDelete}
-        onBookmark={handleToggleBookmark}
+        onToggleBookmark={handleToggleBookmark}
       />
-    </>
+    </div>
   );
 }
 
