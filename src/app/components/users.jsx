@@ -54,7 +54,7 @@ const Users = ({ users, ...rest }) => {
 };
 
 Users.propTypes = {
-    users: PropTypes.arrayOf(PropTypes.user)
+    users: PropTypes.array
 };
 
 export default Users;
