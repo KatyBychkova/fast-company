@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 
 const Pagination = ({ itemsCount, pageSize, onPageChange, currentPage }) => {
     const pageCount = Math.ceil(itemsCount / pageSize);
+
     if (pageCount === 1) return null;
     const pages = _.range(1, pageCount + 1);
     return (
-        <nav aria-label="Page navigation example">
+        <nav>
             <ul className="pagination">
                 {pages.map((page) => (
                     <li
