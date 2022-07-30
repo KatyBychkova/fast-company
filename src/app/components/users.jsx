@@ -14,13 +14,7 @@ const Users = ({ users, ...rest }) => {
     const pageSize = 4;
 
     useEffect(() => {
-        api.professions.fetchAll().then((data) =>
-            setProfessions(
-                Object.assign(data, {
-                    allProfession: { name: "Все профессии" } // тк data это объект, через Object.assign можно добавить еще одну якобы профессию(она будет кнпкой сброса)
-                })
-            )
-        );
+        api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
 
     const handleProfessionSelect = (item) => {
@@ -31,21 +25,28 @@ const Users = ({ users, ...rest }) => {
         setCurrentPage(pageIndex);
     };
 
-    const filteredUsers =
-        selectedProf && selectedProf._id //  у allProfession нет _id, используем это
-            ? users.filter((user) => user.profession === selectedProf)
-            : users;
+    const filteredUsers = selectedProf
+        ? users.filter((user) => user.profession === selectedProf)
+        : users;
     const userCrop = paginate(filteredUsers, currentPage, pageSize); // userCrop - часть спсика юзеров,  отражаемая на выбранной странице при пагинации
     // console.log({ userCrop });
-
+    const clearFilter = () => setSelectedProf(); // метод сброса фильтра устанавливает selectedProf-undefined, тк ничего не предаем в setSelectedProf()
     return (
         <>
             {professions && (
-                <GroupList
-                    selectedItem={selectedProf}
-                    items={professions}
-                    onItemSelect={handleProfessionSelect}
-                />
+                <>
+                    <GroupList
+                        selectedItem={selectedProf}
+                        items={professions}
+                        onItemSelect={handleProfessionSelect}
+                    />
+                    <button
+                        className="btn btn-secondary mt-2" // создали кнопку Очистить
+                        onClick={clearFilter}
+                    >
+                        Очистить
+                    </button>
+                </>
             )}
 
             {count > 0 && (
