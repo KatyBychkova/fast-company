@@ -12,12 +12,13 @@ const Users = ({ users: allUsers, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
-
-    const pageSize = 2;
+    const pageSize = 4;
+    // console.log("allUsers", allUsers);
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
     }, []);
+    // console.log("professions", professions);
 
     useEffect(() => {
         setCurrentPage(1);
@@ -96,7 +97,7 @@ const Users = ({ users: allUsers, ...rest }) => {
 };
 
 Users.propTypes = {
-    users: PropTypes.array
+    users: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
 };
 
 export default Users;
