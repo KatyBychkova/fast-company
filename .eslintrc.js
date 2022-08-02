@@ -13,7 +13,9 @@ module.exports = {
     },
     plugins: ["react"],
     rules: {
-        indent: ["error", 4],
+        // indent: ["error", 2], // линтер начинает ругаться при переносе тернарного выражения
+        indent: [0, 4],
+        // "multiline-ternary": ["off"],
         semi: [2, "always"],
         "space-before-function-paren": [
             "error",

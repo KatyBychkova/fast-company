@@ -32,9 +32,15 @@ const Users = ({ users: allUsers, ...rest }) => {
         setCurrentPage(pageIndex);
     };
 
+    // приводим user.profession, selectedProf к одному типу тк объект ссылочный тип данных и они не равны друг другу
     const filteredUsers = selectedProf
-        ? allUsers.filter((user) => user.profession === selectedProf)
+        ? allUsers.filter(
+              (user) =>
+                  JSON.stringify(user.profession) ===
+                  JSON.stringify(selectedProf)
+          )
         : allUsers;
+
     const count = filteredUsers.length;
 
     const userCrop = paginate(filteredUsers, currentPage, pageSize); // userCrop - часть спсика юзеров,  отражаемая на выбранной странице при пагинации

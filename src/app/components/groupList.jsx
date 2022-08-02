@@ -10,6 +10,7 @@ const GroupList = ({
 }) => {
     // console.log(items);
     return (
+        // вариант перебора
         <ul className="list-group">
             {Object.keys(items).map((item) => (
                 <li
