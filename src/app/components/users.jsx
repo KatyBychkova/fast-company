@@ -47,7 +47,7 @@ const Users = ({ users: allUsers, ...rest }) => {
         : allUsers;
 
     const count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]); // сортируем
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]); // сортируем
     const userCrop = paginate(sortedUsers, currentPage, pageSize); // userCrop - часть списка юзеров,  отражаемая на выбранной странице при пагинации
     const clearFilter = () => setSelectedProf(); // метод сброса фильтра устанавливает selectedProf-undefined, тк ничего не предаем в setSelectedProf()
 

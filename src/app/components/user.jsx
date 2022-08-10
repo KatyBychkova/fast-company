@@ -34,18 +34,18 @@ const User = ({
             <td>{completedMeetings}</td>
             <td>{rate} /5</td>
             <td className="text-center">
-                <Bookmark
+                {/* <Bookmark
                     status={bookmark}
                     onClick={() => onToggleBookmark(_id)}
-                />
+                /> */}
             </td>
             <td>
-                <button
+                {/* <button
                     onClick={() => onDelete(_id)}
                     className="btn btn-danger"
                 >
                     delete
-                </button>
+                </button> */}
             </td>
         </tr>
     );
