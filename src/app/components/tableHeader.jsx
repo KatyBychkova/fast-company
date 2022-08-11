@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const TableHeader = ({ onSort, selectedSort, columns }) => {
+    // Сортировка   // selectedSort - это sortBy в users.jsx const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" }); path - это iter
     const handleSort = (item) => {
         if (selectedSort.path === item) {
             onSort({
@@ -16,37 +17,36 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
     return (
         <thead>
             <tr>
-                {Object.keys(columns).map((column) => (
-                    <th
-                        key={column}
-                        onClick={
-                            columns[column].path
-                                ? () => handleSort(columns[column].path)
-                                : undefined
-                        }
-                        {...{ role: columns[column].path && "button" }}
-                        scope="col"
-                    >
-                        {columns[column].name}
-                    </th>
-                ))}
-                {/* <th onClick={() => handleSort("name")} scope="col">
-                    Имя
-                </th>
-                <th scope="col">Качества</th>
-                <th onClick={() => handleSort("profession.name")} scope="col">
-                    Профессия
-                </th>
-                <th onClick={() => handleSort("completedMeetings")} scope="col">
-                    Встретился, раз
-                </th>
-                <th onClick={() => handleSort("rate")} scope="col">
-                    Оценка
-                </th>
-                <th onClick={() => handleSort("bookmark")} scope="col">
-                    Избранное
-                </th>
-                <th onClick={() => handleSort()} /> */}
+                {Object.keys(columns).map(
+                    (
+                        column // columns - объект из UserTable.jsx (шапка таблицы)
+                    ) => (
+                        <th
+                            key={column}
+                            onClick={
+                                columns[column].path
+                                    ? () => handleSort(columns[column].path)
+                                    : undefined
+                            }
+                            {...{ role: columns[column].path && "button" }}
+                            scope="col"
+                        >
+                            {columns[column].name}
+                            <i
+                                className={
+                                    selectedSort.path
+                                        ? selectedSort.path ===
+                                          columns[column].path
+                                            ? selectedSort.order === "asc"
+                                                ? "bi bi-caret-up-fill"
+                                                : "bi bi-caret-down-fill"
+                                            : null
+                                        : null
+                                }
+                            ></i>
+                        </th>
+                    )
+                )}
             </tr>
         </thead>
     );
