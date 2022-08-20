@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Bookmark from "./bookmark";
 import QualitiesList from "./qualitiesList";
@@ -15,7 +16,16 @@ const UserTable = ({
     //  users передается через атрибут из users.jsx, rest из компонента User (это onDelete, onToggleBookmark)
 
     const columns = {
-        name: { path: "name", name: "Имя" },
+        name: {
+            path: "name",
+            name: "Имя",
+            component: (user) => (
+                <Link key={user._id} to={`/users/${user._id}`}>
+                    {user.name}
+                </Link>
+            )
+        },
+        // name: <Link to="/contacts">Контакты</Link>,
         qualities: {
             name: "Качества",
             component: (user) => <QualitiesList qualities={user.qualities} />

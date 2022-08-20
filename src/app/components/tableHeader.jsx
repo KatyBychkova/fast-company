@@ -13,40 +13,36 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
             onSort({ path: item, order: "asc" });
         }
     };
+    // columns - заголовки таблицы в ячейках <td><td/>, объект из UserTable.jsx (шапка таблицы)
 
     return (
         <thead>
             <tr>
-                {Object.keys(columns).map(
-                    (
-                        column // columns - объект из UserTable.jsx (шапка таблицы)
-                    ) => (
-                        <th
-                            key={column}
-                            onClick={
-                                columns[column].path
-                                    ? () => handleSort(columns[column].path)
-                                    : undefined
-                            }
-                            {...{ role: columns[column].path && "button" }}
-                            scope="col"
-                        >
-                            {columns[column].name}
-                            <i
-                                className={
-                                    selectedSort.path
-                                        ? selectedSort.path ===
-                                          columns[column].path
-                                            ? selectedSort.order === "asc"
-                                                ? "bi bi-caret-up-fill"
-                                                : "bi bi-caret-down-fill"
-                                            : null
+                {Object.keys(columns).map((column) => (
+                    <th
+                        key={column}
+                        onClick={
+                            columns[column].path
+                                ? () => handleSort(columns[column].path)
+                                : undefined
+                        }
+                        {...{ role: columns[column].path && "button" }}
+                        scope="col"
+                    >
+                        {columns[column].name}
+                        <i
+                            className={
+                                selectedSort.path
+                                    ? selectedSort.path === columns[column].path
+                                        ? selectedSort.order === "asc"
+                                            ? "bi bi-caret-up-fill"
+                                            : "bi bi-caret-down-fill"
                                         : null
-                                }
-                            ></i>
-                        </th>
-                    )
-                )}
+                                    : null
+                            }
+                        ></i>
+                    </th>
+                ))}
             </tr>
         </thead>
     );

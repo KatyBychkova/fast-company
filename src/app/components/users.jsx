@@ -18,9 +18,9 @@ const Users = () => {
 
     const [users, setUsers] = useState(); // users - массив объектов из fakeApi
     useEffect(() => {
-        // console.log("users useEffect", users);
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
+    console.log("users useEffect", users);
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
@@ -75,43 +75,45 @@ const Users = () => {
         const clearFilter = () => setSelectedProf(); // метод сброса фильтра устанавливает selectedProf-undefined, тк ничего не предаем в setSelectedProf()
 
         return (
-            <div className="d-flex">
-                {professions && (
-                    <div className="d-flex flex-column flex-shrink-0 p-3">
-                        <GroupList
-                            selectedItem={selectedProf}
-                            items={professions}
-                            onItemSelect={handleProfessionSelect}
-                        />
-                        <button
-                            className="btn btn-secondary mt-2" // создали кнопку Очистить
-                            onClick={clearFilter}
-                        >
-                            Очистить
-                        </button>
-                    </div>
-                )}
-                <div className="d-flex flex-column">
-                    <SearchStatus length={count} />
-                    {count > 0 && (
-                        <UserTable
-                            users={userCrop}
-                            onSort={handleSort}
-                            selectedSort={sortBy}
-                            onDelete={handleDelete}
-                            onToggleBookmark={handleToggleBookmark}
-                        />
+            <>
+                <div className="d-flex">
+                    {professions && (
+                        <div className="d-flex flex-column flex-shrink-0 p-3">
+                            <GroupList
+                                selectedItem={selectedProf}
+                                items={professions}
+                                onItemSelect={handleProfessionSelect}
+                            />
+                            <button
+                                className="btn btn-secondary mt-2" // создали кнопку Очистить
+                                onClick={clearFilter}
+                            >
+                                Очистить
+                            </button>
+                        </div>
                     )}
-                    <div className="d-flex justify-content-center">
-                        <Pagination
-                            itemsCount={count}
-                            pageSize={pageSize}
-                            currentPage={currentPage}
-                            onPageChange={handlePageChange}
-                        />
+                    <div className="d-flex flex-column">
+                        <SearchStatus length={count} />
+                        {count > 0 && (
+                            <UserTable
+                                users={userCrop}
+                                onSort={handleSort}
+                                selectedSort={sortBy}
+                                onDelete={handleDelete}
+                                onToggleBookmark={handleToggleBookmark}
+                            />
+                        )}
+                        <div className="d-flex justify-content-center">
+                            <Pagination
+                                itemsCount={count}
+                                pageSize={pageSize}
+                                currentPage={currentPage}
+                                onPageChange={handlePageChange}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </>
         );
     }
     return "loading...";
