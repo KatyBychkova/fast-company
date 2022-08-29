@@ -1,20 +1,21 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 // import Users from "./components/users";
 import Navigation from "./components/navigation";
-import Login from "./components/login";
-import MainPage from "./components/mainPage";
-import UserLayout from "./components/usesLayout";
+import Login from "./layouts/login";
+import Main from "./layouts/main";
+import UserLayout from "./layouts/usesLayout";
 
 function App() {
     return (
         <>
             <Navigation />
-            <Route path="/login" component={Login} />
-            <Route path="/mainPage" component={MainPage} />
-            <Route path="/users/:userId?" component={UserLayout} />
-            {/* <Route path="/users" component={Users} /> */}
-            {/* <Users /> */}
+            <Switch>
+                <Route path="/" exact component={Main} />
+                <Route path="/login" component={Login} />
+                <Route path="/users/:userId?" component={UserLayout} />
+                <Redirect to="/" />
+            </Switch>
         </>
     );
 }

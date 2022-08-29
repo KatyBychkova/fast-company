@@ -2,46 +2,34 @@ import React, { useState, useEffect } from "react";
 import api from "../api";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
+import QualitiesList from "./qualitiesList";
 
-const UserPage = ({ userId }) => {
+const UserPage = ({ id }) => {
     const [user, setUser] = useState();
     const history = useHistory();
     useEffect(() => {
-        api.users.getById(userId).then((user) => setUser(user));
+        api.users.getById(id).then((data) => setUser(data));
     }, []);
-    const handleShowUsers = () => {
+    const handleClick = () => {
         history.replace("/users");
     };
 
-    console.log("useEffect user", user);
+    // console.log("useEffect user", user);
     // console.log("id user", userId);
     if (user) {
-        // <h2>KOT</h2>
         return (
             <>
                 <h1>{user.name}</h1>
                 <h2 key={user.profession._id}>
                     Профессия: {user.profession.name}
                 </h2>
-                <h6>
-                    {user.qualities.map((qualitie) => (
-                        <span
-                            className={"badge m-1 bg-" + qualitie.color}
-                            key={qualitie._id}
-                        >
-                            {qualitie.name}
-                        </span>
-                    ))}
-                </h6>
-
+                <QualitiesList qualities={user.qualities} />
                 <h6 className="mb-3">
                     сompletedMeetings: {user.completedMeetings}
                 </h6>
                 <h1>Rate: {user.rate}</h1>
                 <button
-                    onClick={() => {
-                        handleShowUsers();
-                    }}
+                    onClick={handleClick}
                     className="btn btn-outline-secondary"
                 >
                     Все пользователи
@@ -54,7 +42,7 @@ const UserPage = ({ userId }) => {
 };
 
 UserPage.propTypes = {
-    userId: PropTypes.string
+    id: PropTypes.string.isRequired
 };
 
 export default UserPage;
