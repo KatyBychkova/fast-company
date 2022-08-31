@@ -7,21 +7,22 @@ import GroupList from "./groupList";
 import api from "../api";
 import SearchStatus from "./searchStatus";
 import _ from "lodash";
-// import SearchUserForm from "./searchUserForm";
+import SearchUserForm from "./searchUserForm";
 
 const UsersList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" }); // устанавливаем по какому признаку сортируем и тип сортировки
-    // console.log(sortBy);
+    const [searchValue, setSearchValue] = useState(""); // хранение значений из строки поиска
+    const [users, setUsers] = useState(); // users - массив объектов из fakeApi
     const pageSize = 8;
 
-    const [users, setUsers] = useState(); // users - массив объектов из fakeApi
     useEffect(() => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
     // console.log("users useEffect", users);
+
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
     };
@@ -56,22 +57,41 @@ const UsersList = () => {
         setSortBy(item);
     };
 
+    // изменяет значения  строке поиска
+    const handleSearchValue = (e) => {
+        console.log(e.target.value);
+        setSearchValue(e.target.value);
+    };
+
+    // выводит найденные значения на странице
+    // что сортируем -
+    // по какому признаку сортируем
+    // отсортированные значения
+
     if (users) {
         // приводим user.profession, selectedProf к одному типу тк объект ссылочный тип данных и они не равны друг другу
+        // filteredUsers  - юзеры отфильтрованные по профессии, либо через search, либо все юзеры если фильтра нет
+
         const filteredUsers = selectedProf
             ? users.filter(
                   (user) =>
                       JSON.stringify(user.profession) ===
                       JSON.stringify(selectedProf)
               )
+            : searchValue
+            ? users.filter((user) =>
+                  user.name.toLowerCase().includes(searchValue.toLowerCase())
+              )
             : users;
 
+        /* Сортировка */
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
             filteredUsers,
             [sortBy.path],
             [sortBy.order]
-        ); // сортируем
+        );
+
         const userCrop = paginate(sortedUsers, currentPage, pageSize); // userCrop - часть списка юзеров,  отражаемая на выбранной странице при пагинации
         const clearFilter = () => setSelectedProf(); // метод сброса фильтра устанавливает selectedProf-undefined, тк ничего не предаем в setSelectedProf()
 
@@ -95,11 +115,11 @@ const UsersList = () => {
                     )}
                     <div className="d-flex flex-column">
                         <SearchStatus length={count} />
-                        {/* <SearchUserForm
+                        <SearchUserForm
                             name="Search"
-                            value={value}
-                            onChange={handleChange}
-                        /> */}
+                            value={searchValue}
+                            onChange={handleSearchValue}
+                        />
                         {count > 0 && (
                             <UserTable
                                 users={userCrop}
