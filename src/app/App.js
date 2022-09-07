@@ -10,9 +10,9 @@ function App() {
         <>
             <Navigation />
             <Switch>
-                <Route path="/" exact component={Main} />
-                <Route path="/login" component={Login} />
                 <Route path="/users/:userId?" component={Users} />
+                <Route path="/login/:type?" component={Login} />
+                <Route path="/" exact component={Main} />
                 <Redirect to="/" />
             </Switch>
         </>

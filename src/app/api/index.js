@@ -8,9 +8,11 @@
 
 import users from "./fake.api/user.api"; // импортируем ф-ю fetchAll, которая уже возвращает нам массив юзеров с задержкой
 import professions from "./fake.api/professions.api"; // импортируем ф-ю fetchAll, которая уже возвращает нам массив профессий с задержкой
+import qualities from "./fake.api/qualities.api";
 const API = {
     users, // fetchAll()
-    professions // fetchAll()
+    professions, // fetchAll()
+    qualities // fetchAll()
 };
 
 // console.log("professions api", professions, users);

@@ -15,7 +15,7 @@ module.exports = {
     rules: {
         // indent: ["error", 2], // линтер начинает ругаться при переносе тернарного выражения
         indent: [0, 4],
-        // "multiline-ternary": ["off"],
+        "multiline-ternary": ["off"],
         semi: [2, "always"],
         "space-before-function-paren": [
             "error",
