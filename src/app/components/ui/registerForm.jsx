@@ -88,6 +88,7 @@ const RegisterForm = () => {
         if (!isValid) return; //  !isValid = true, срабатывает return и data не передается дальше (на сервер)
         console.log(data);
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <TextField

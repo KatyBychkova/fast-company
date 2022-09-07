@@ -25,7 +25,7 @@ export function validator(data, config) {
         switch (validateMethod) {
             case "isRequired": {
                 if (typeof data === "boolean") {
-                    statusValidate = !data;
+                    statusValidate = !data; // data.licence изначально false, поэтому ошибка на странице будет сразу подсвечена
                 } else {
                     statusValidate = data.trim() === "";
                 }
