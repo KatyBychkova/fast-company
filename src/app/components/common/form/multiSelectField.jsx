@@ -23,15 +23,20 @@ current {
 }
 */
 
-const MultiSelectField = ({ options, onChange, name, label }) => {
+const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
     // для компонента Select нужен МАССИВ options
+    // const optionsArray =
+    //     !Array.isArray(options) && typeof options === "object"
+    //         ? Object.keys(options).map((optionName) => ({
+    //               label: options[optionName].name,
+    //               value: options[optionName]._id
+    //           }))
+    //         : options;
     const optionsArray =
         !Array.isArray(options) && typeof options === "object"
-            ? Object.keys(options).map((optionName) => ({
-                  label: options[optionName].name,
-                  value: options[optionName]._id
-              }))
+            ? Object.values(options)
             : options;
+
     const handleChange = (value) => {
         console.log("value", value);
         console.log("в мульти", { name: name, value });
@@ -43,6 +48,7 @@ const MultiSelectField = ({ options, onChange, name, label }) => {
             <Select
                 isMulti
                 closeMenuOnSelect={false}
+                defaultValue={defaultValue}
                 name={name}
                 options={optionsArray}
                 className="basic-multi-select"
@@ -57,6 +63,7 @@ MultiSelectField.propTypes = {
     options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     onChange: PropTypes.func,
     name: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
+    defaultValue: PropTypes.array
 };
 export default MultiSelectField;

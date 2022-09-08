@@ -4,7 +4,7 @@ import { validator } from "../../utils/validator";
 import api from "../../api";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
-import MultiSelectField from "../common/form/multiSelect";
+import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
 
 const RegisterForm = () => {
@@ -16,13 +16,30 @@ const RegisterForm = () => {
         qualities: [],
         licence: false
     });
-    const [qualities, setQualities] = useState({});
+    const [qualities, setQualities] = useState([]);
     const [professions, setProfessions] = useState();
     const [errors, setErrors] = useState({});
 
+    // useEffect(() => {
+    //     api.professions.fetchAll().then((data) => setProfessions(data));
+    //     api.qualities.fetchAll().then((data) => setQualities(data));
+    // }, []);
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
-        api.qualities.fetchAll().then((data) => setQualities(data));
+        api.professions.fetchAll().then((data) => {
+            const professionsList = Object.keys(data).map((professionName) => ({
+                label: data[professionName].name,
+                value: data[professionName]._id
+            }));
+            setProfessions(professionsList);
+        });
+        api.qualities.fetchAll().then((data) => {
+            const qualitiesList = Object.keys(data).map((optionName) => ({
+                label: data[optionName].name,
+                value: data[optionName]._id,
+                color: data[optionName].color
+            }));
+            setQualities(qualitiesList);
+        });
     }, []);
 
     const handleChange = (current) => {
@@ -82,11 +99,45 @@ const RegisterForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     const isValid = validate(); // false - ошибки есть
+    //     if (!isValid) return; //  !isValid = true, срабатывает return и data не передается дальше (на сервер)
+    //     console.log(data);
+    // };
+
+    const getProfessionById = (id) => {
+        for (const prof of professions) {
+            if (prof.value === id) {
+                return { _id: prof.value, name: prof.label };
+            }
+        }
+    };
+    const getQualities = (elements) => {
+        const qualitiesArray = [];
+        for (const elem of elements) {
+            for (const quality in qualities) {
+                if (elem.value === qualities[quality].value) {
+                    qualitiesArray.push({
+                        _id: qualities[quality].value,
+                        name: qualities[quality].label,
+                        color: qualities[quality].color
+                    });
+                }
+            }
+        }
+        return qualitiesArray;
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
-        const isValid = validate(); // false - ошибки есть
-        if (!isValid) return; //  !isValid = true, срабатывает return и data не передается дальше (на сервер)
-        console.log(data);
+        const isValid = validate();
+        if (!isValid) return;
+        const { profession, qualities } = data;
+        console.log({
+            ...data,
+            profession: getProfessionById(profession),
+            qualities: getQualities(qualities)
+        });
     };
 
     return (
@@ -109,6 +160,7 @@ const RegisterForm = () => {
             <SelectField
                 label="Выбери свою профессию"
                 defaultOption="Choose..."
+                name="profession"
                 options={professions}
                 value={data.profession}
                 onChange={handleChange}
@@ -127,6 +179,7 @@ const RegisterForm = () => {
             <MultiSelectField
                 options={qualities}
                 onChange={handleChange}
+                defaultValue={data.qualities}
                 name="qualities"
                 label="Выберите ваши качества"
             />
