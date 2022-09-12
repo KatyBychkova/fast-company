@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-// если options не массив, но объект
 const SelectField = ({
     label,
     value,

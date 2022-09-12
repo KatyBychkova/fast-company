@@ -51,6 +51,12 @@ export function validator(data, config) {
                 statusValidate = data.length < config.value;
                 break;
             }
+            case "isName": {
+                const emailRegExp =
+                    /^(([a-zA-Zа-яА-я]+)\s){1,}(([a-zA-Zа-яА-я]+)\s?){1,}$/g;
+                statusValidate = !emailRegExp.test(data);
+                break;
+            }
 
             default:
                 break;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Qualities from "../../ui/qualities";
 
 const UserPage = ({ id }) => {
@@ -10,11 +10,12 @@ const UserPage = ({ id }) => {
     useEffect(() => {
         api.users.getById(id).then((data) => setUser(data));
     }, []);
+
     const handleClick = () => {
         history.replace("/users");
     };
 
-    // console.log("useEffect user", user);
+    console.log("useEffect user on UsaePage", user);
     // console.log("id user", userId);
     if (user) {
         return (
@@ -28,12 +29,14 @@ const UserPage = ({ id }) => {
                     сompletedMeetings: {user.completedMeetings}
                 </h6>
                 <h1>Rate: {user.rate}</h1>
-                <button
+                <Link
+                    to={`/users/${id}/edit`}
                     onClick={handleClick}
                     className="btn btn-outline-secondary"
+                    id={id}
                 >
-                    Все пользователи
-                </button>
+                    Изменить
+                </Link>
             </>
         );
     } else {
