@@ -12,7 +12,7 @@ const UserLayout = () => {
         <>
             {userId ? (
                 edit ? (
-                    <EditUserPage id={userId} />
+                    <EditUserPage />
                 ) : (
                     <UserPage id={userId} />
                 )

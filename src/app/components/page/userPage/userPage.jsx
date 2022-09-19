@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../../api";
 import PropTypes from "prop-types";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Qualities from "../../ui/qualities";
 
 const UserPage = ({ id }) => {
@@ -12,10 +12,10 @@ const UserPage = ({ id }) => {
     }, []);
 
     const handleClick = () => {
-        history.replace("/users");
+        history.push(history.location.pathname + "/edit");
     };
 
-    console.log("useEffect user on UsaePage", user);
+    // console.log("useEffect user on UsaePage", user);
     // console.log("id user", userId);
     if (user) {
         return (
@@ -29,14 +29,20 @@ const UserPage = ({ id }) => {
                     сompletedMeetings: {user.completedMeetings}
                 </h6>
                 <h1>Rate: {user.rate}</h1>
-                <Link
-                    to={`/users/${id}/edit`}
+                <button
+                    className="btn btn-outline-secondary"
                     onClick={handleClick}
+                >
+                    Изменить
+                </button>
+                {/* <Link
+                    to={`/users/${id}/edit`}
+                    // onClick={handleClick}
                     className="btn btn-outline-secondary"
                     id={id}
                 >
                     Изменить
-                </Link>
+                </Link> */}
             </>
         );
     } else {

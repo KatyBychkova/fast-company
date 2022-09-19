@@ -11,7 +11,7 @@ const RegisterForm = () => {
     const [data, setData] = useState({
         email: "",
         password: "",
-        profession: "",
+        profession: "", // здесь "номер id"
         sex: "male",
         qualities: [],
         licence: false
@@ -63,8 +63,8 @@ const RegisterForm = () => {
         });
     }, []);
 
-    // console.log("qualities", qualities);
-    // console.log("professions", professions);
+    console.log("qualities", qualities);
+    console.log("professions", professions);
     console.log("data.profession", [data.profession]);
 
     const handleChange = (current) => {

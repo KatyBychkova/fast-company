@@ -36,10 +36,11 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
         !Array.isArray(options) && typeof options === "object"
             ? Object.values(options)
             : options;
+    console.log(optionsArray);
 
     const handleChange = (value) => {
-        console.log("value", value);
-        console.log("в мульти", { name: name, value });
+        // console.log("value", value);
+        // console.log("в мульти", { name: name, value });
         onChange({ name: name, value });
     };
     return (
