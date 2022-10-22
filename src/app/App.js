@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import Navigation from "./components/ui/navigation";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
@@ -15,6 +16,7 @@ function App() {
                 <Route path="/" exact component={Main} />
                 <Redirect to="/" />
             </Switch>
+            <ToastContainer />
         </>
     );
 }

@@ -7,6 +7,7 @@ import GroupList from "../../common/groupList";
 import api from "../../../api";
 import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
+import { useUser } from "../../../hooks/useUsers";
 
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -14,16 +15,14 @@ const UsersListPage = () => {
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" }); // устанавливаем по какому признаку сортируем и тип сортировки
     const [searchQuery, setSearchQuery] = useState(""); // хранение значений из строки поиска
-    const [users, setUsers] = useState(); // users - массив объектов из fakeApi
     const pageSize = 8;
 
-    useEffect(() => {
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
-    // console.log("users useEffect", users);
+    const { users } = useUser(); // users - массив объектов из useUser
+    console.log(users);
 
     const handleDelete = (userId) => {
-        setUsers(users.filter((user) => user._id !== userId));
+        // setUsers(users.filter((user) => user._id !== userId));
+        console.log(userId);
     };
     const handleToggleBookmark = (id) => {
         const newArray = users.map((user) => {
@@ -32,8 +31,8 @@ const UsersListPage = () => {
             }
             return user;
         });
-
-        setUsers(newArray);
+        // setUsers( console.log(userId););
+        console.log(console.log(newArray));
     };
 
     useEffect(() => {
