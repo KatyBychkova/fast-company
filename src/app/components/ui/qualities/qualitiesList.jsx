@@ -5,8 +5,8 @@ import Quality from "./quality";
 const QualitiesList = ({ qualities }) => {
     return (
         <>
-            {qualities.map((quality) => {
-                return <Quality key={quality._id} {...quality} />;
+            {qualities.map((q) => {
+                return <Quality key={q} id={q} />;
             })}
         </>
     );
