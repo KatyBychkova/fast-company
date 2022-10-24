@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Navigation from "./components/ui/navigation";
 import { ProfessionProvider } from "./hooks/useProfession";
-import { QualityProvider } from "./hooks/useQuality";
+import { QualityProvider } from "./hooks/useQualities";
 import Login from "./layouts/login";
 import Main from "./layouts/main";
 import Users from "./layouts/users";

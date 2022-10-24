@@ -6,7 +6,7 @@ import qualityService from "../services/quality.service";
 
 const QualityContext = React.createContext();
 
-export const useQuality = () => {
+export const useQualities = () => {
     return useContext(QualityContext);
 };
 
@@ -16,8 +16,22 @@ export const QualityProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        const getQualitiesList = async () => {
+            try {
+                const { content } = await qualityService.get();
+                setQualities(content);
+                setLoading(false);
+            } catch (error) {
+                errorCatcher(error);
+            }
+        };
         getQualitiesList();
     }, []);
+
+    function getQuality(id) {
+        // console.log("getQuality(id)", id);
+        return qualities.find((q) => q._id === id);
+    }
 
     useEffect(() => {
         if (error !== null) {
@@ -25,21 +39,6 @@ export const QualityProvider = ({ children }) => {
             setError(null);
         }
     }, [error]);
-
-    function getQuality(id) {
-        // console.log("getQuality(id)", id);
-        return qualities.find((q) => q._id === id);
-    }
-
-    async function getQualitiesList() {
-        try {
-            const { content } = await qualityService.get();
-            setQualities(content);
-            setLoading(false);
-        } catch (error) {
-            errorCatcher(error);
-        }
-    }
 
     function errorCatcher(error) {
         const { message } = error.response.data;
