@@ -1,12 +1,40 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import config from "../config.json";
+import configFile from "../config.json";
 
-axios.defaults.baseURL = config.apiEndpoint; // настройки по умолчанию, которые будут применяться к каждому запросу.
+axios.defaults.baseURL = configFile.apiEndpoint; // настройки по умолчанию, которые будут применяться к каждому запросу.
+
+axios.interceptors.request.use(
+    // добавляем ".json" до отправки запроса
+    function (config) {
+        if (configFile.isFireBase) {
+            const containSlash = /\/$/gi.test(config.url);
+            config.url =
+                (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+            console.log(config.url);
+        }
+
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+function transformData(data) {
+    return data ? Object.keys(data).map((key) => ({ ...data[key] })) : []; // трансформация данных из объекта в массив
+}
 
 axios.interceptors.response.use(
-    // обрабатываем данные, получ  с сервера, изменяем их и возвращаем обновленные
-    (res) => res,
+    // обрабатываем данные, получ  с сервера, изменяем их, если требуется и возвращаем обновленные
+    (res) => {
+        if (configFile.isFireBase) {
+            res.data = { content: transformData(res.data) };
+            console.log(res.data);
+        }
+        return res;
+    },
+
     // обрабатываем неожидаемую ошибку в случае ее возникновения
     function (error) {
         const expectedErrors =
