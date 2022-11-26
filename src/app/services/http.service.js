@@ -1,10 +1,12 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import configFile from "../config.json";
+import configFile from "../../app/config.json";
 
-axios.defaults.baseURL = configFile.apiEndpoint; // настройки по умолчанию, которые будут применяться к каждому запросу.
+const http = axios.create({ baseURL: configFile.apiEndpoint });
 
-axios.interceptors.request.use(
+// axios.defaults.baseURL = configFile.apiEndpoint; // настройки по умолчанию, которые будут применяться к каждому запросу.
+
+http.interceptors.request.use(
     // добавляем ".json" до отправки запроса
     function (config) {
         if (configFile.isFireBase) {
@@ -25,12 +27,12 @@ function transformData(data) {
     return data ? Object.keys(data).map((key) => ({ ...data[key] })) : []; // трансформация данных из объекта в массив
 }
 
-axios.interceptors.response.use(
+http.interceptors.response.use(
     // обрабатываем данные, получ  с сервера, изменяем их, если требуется и возвращаем обновленные
     (res) => {
         if (configFile.isFireBase) {
             res.data = { content: transformData(res.data) };
-            console.log(res.data);
+            //  console.log(res.data);
         }
         return res;
     },
@@ -51,10 +53,10 @@ axios.interceptors.response.use(
 );
 
 const httpService = {
-    get: axios.get,
-    post: axios.post,
-    put: axios.put,
-    delete: axios.delete
+    get: http.get,
+    post: http.post,
+    put: http.put,
+    delete: http.delete
 };
 
 export default httpService;
