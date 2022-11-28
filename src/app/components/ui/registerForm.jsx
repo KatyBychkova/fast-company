@@ -17,6 +17,7 @@ const RegisterForm = () => {
         password: "",
         profession: "", // здесь "номер id"
         sex: "male",
+        name: "",
         qualities: [],
         licence: false
     });
@@ -45,6 +46,15 @@ const RegisterForm = () => {
     };
 
     const validatorConfig = {
+        name: {
+            isRequired: {
+                message: "Имя обязательно для заполнения"
+            },
+            min: {
+                message: "Имя должно содержать минимум 2 символа",
+                value: 2
+            }
+        },
         email: {
             isRequired: {
                 message: "Электронная почта обязательна для заполнения"
@@ -121,6 +131,14 @@ const RegisterForm = () => {
                 error={errors.email}
             />
             <TextField
+                label="Имя"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                error={errors.name}
+            />
+
+            <TextField
                 label="Пароль"
                 type="password"
                 name="password"
@@ -128,6 +146,7 @@ const RegisterForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
+
             <SelectField
                 label="Выбери свою профессию"
                 defaultOption="Choose..."
