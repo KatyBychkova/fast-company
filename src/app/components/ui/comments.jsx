@@ -1,29 +1,26 @@
 import { orderBy } from "lodash";
-import React, { useEffect, useState } from "react";
-import api from "../../api";
-import { useParams } from "react-router-dom";
+import React from "react";
+
 import CommentsList, { AddCommentForm } from "../common/comments";
+import { useComments } from "../../hooks/useComments";
 
 // Компонент Comments запрашивает все внутри, чтобы не зависеть от состояния страницы юзера,
 //  а зависеть только от своего
 //  Поэтому и в UserPage ничего ему не пердаем
 const Comments = () => {
-    const { userId } = useParams(); // забираем id из url параметров
-    const [comments, setComments] = useState([]);
-    useEffect(() => {
-        api.comments
-            .fetchCommentsForUser(userId)
-            .then((data) => setComments(data));
-    }, []);
+    const { createComment, comments, removeComment } = useComments();
+
     const handleSubmit = (data) => {
-        api.comments
-            .add({ ...data, pageId: userId }) // pageId: userId - фиксируем на чьей странице должен отображаться комментарий
-            .then((data) => setComments([...comments, data])); // data - новые комментарии
+        createComment(data);
+        // api.comments
+        //     .add({ ...data, pageId: userId }) // pageId: userId - фиксируем на чьей странице должен отображаться комментарий
+        //     .then((data) => setComments([...comments, data])); // data - новые комментарии
     };
     const handleRemoveComment = (id) => {
-        api.comments.remove(id).then((id) => {
-            setComments(comments.filter((x) => x._id !== id));
-        });
+        removeComment(id);
+        // api.comments.remove(id).then((id) => {
+        //     setComments(comments.filter((x) => x._id !== id));
+        // });
     };
     const sortedComments = orderBy(comments, ["created_at"], ["desc"]);
     return (

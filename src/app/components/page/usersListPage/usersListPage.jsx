@@ -4,20 +4,22 @@ import Pagination from "../../common/pagination";
 import { paginate } from "../../../utils/paginate";
 import UserTable from "../../ui/usersTable";
 import GroupList from "../../common/groupList";
-import api from "../../../api";
 import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
+import { useProfessions } from "../../../hooks/useProfession";
+import { useAuth } from "../../../hooks/useAuth";
 
 const UsersListPage = () => {
+    const { users } = useUser(); // users - массив объектов из useUser
+    const { currentUser } = useAuth();
+    const { isLoading: professionsLoading, professions } = useProfessions();
     const [currentPage, setCurrentPage] = useState(1);
-    const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProf] = useState();
     const [sortBy, setSortBy] = useState({ iter: "name", order: "asc" }); // устанавливаем по какому признаку сортируем и тип сортировки
     const [searchQuery, setSearchQuery] = useState(""); // хранение значений из строки поиска
     const pageSize = 8;
 
-    const { users } = useUser(); // users - массив объектов из useUser
     console.log(users);
 
     const handleDelete = (userId) => {
@@ -34,10 +36,6 @@ const UsersListPage = () => {
         // setUsers( console.log(userId););
         console.log(console.log(newArray));
     };
-
-    useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
-    }, []);
 
     useEffect(() => {
         setCurrentPage(1);
@@ -66,21 +64,24 @@ const UsersListPage = () => {
         // приводим user.profession, selectedProf к одному типу тк объект ссылочный тип данных и они не равны друг другу
         // filteredUsers  - юзеры отфильтрованные по профессии, либо через search, либо все юзеры если фильтра нет
 
-        const filteredUsers = searchQuery
-            ? users.filter(
-                  (user) =>
-                      user.name
-                          .toLowerCase()
-                          .indexOf(searchQuery.toLowerCase()) !== -1
-              )
-            : selectedProf
-            ? users.filter(
-                  (user) =>
-                      JSON.stringify(user.profession) ===
-                      JSON.stringify(selectedProf)
-              )
-            : users;
-
+        function filterUsers(data) {
+            const filteredUsers = searchQuery
+                ? data.filter(
+                      (user) =>
+                          user.name
+                              .toLowerCase()
+                              .indexOf(searchQuery.toLowerCase()) !== -1
+                  )
+                : selectedProf
+                ? data.filter(
+                      (user) =>
+                          JSON.stringify(user.profession) ===
+                          JSON.stringify(selectedProf)
+                  )
+                : data;
+            return filteredUsers.filter((u) => u._id !== currentUser._id); // в списке юзеров исключаем текущего
+        }
+        const filteredUsers = filterUsers(users);
         /* Сортировка */
         const count = filteredUsers.length;
         const sortedUsers = _.orderBy(
@@ -95,7 +96,7 @@ const UsersListPage = () => {
         return (
             <>
                 <div className="d-flex">
-                    {professions && (
+                    {professions && !professionsLoading && (
                         <div className="d-flex flex-column flex-shrink-0 p-3">
                             <GroupList
                                 selectedItem={selectedProf}

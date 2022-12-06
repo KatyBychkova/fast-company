@@ -51,7 +51,13 @@ const LoginForm = () => {
         if (!isValid) return; //  !isValid = true, срабатывает return и data не передается дальше (на сервер)
         try {
             await logIn(data);
-            history.push("/");
+
+            //  если есть путь с которого пришел пользователь, возвращаем его туда же (history.location.state.from.pathname). Если нет -  на главную страницу.
+            history.push(
+                history.location.state
+                    ? history.location.state.from.pathname
+                    : "/"
+            );
         } catch (error) {
             setEnterError(error.message);
         }
