@@ -15,6 +15,8 @@ export const QualityProvider = ({ children }) => {
     const [isLoading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // console.log("QualityProvider", qualities);
+
     useEffect(() => {
         const getQualitiesList = async () => {
             try {
