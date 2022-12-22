@@ -17,6 +17,7 @@ function App() {
     useEffect(() => {
         dispatch(loadQualitiesList());
     }, []);
+
     return (
         <>
             <AuthProvider>
