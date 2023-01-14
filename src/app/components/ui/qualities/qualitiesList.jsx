@@ -9,13 +9,15 @@ import {
 } from "../../../store/qualities";
 
 const QualitiesList = ({ qualities }) => {
+    console.log("qualities", qualities);
     const dispatch = useDispatch();
     const isLoading = useSelector(getQualitiesLoadingStatus());
-    if (isLoading) return "Loading...";
     const qualitiesList = useSelector(getQualitiesByIds(qualities));
     useEffect(() => {
-        dispatch(loadQualitiesList);
+        dispatch(loadQualitiesList());
     }, []);
+
+    if (isLoading) return "Loading...";
 
     return (
         <>
